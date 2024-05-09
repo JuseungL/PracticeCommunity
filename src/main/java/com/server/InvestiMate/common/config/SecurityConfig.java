@@ -1,5 +1,9 @@
 package com.server.InvestiMate.common.config;
 
+import com.server.InvestiMate.api.auth.service.CustomOAuth2UserService;
+import com.server.InvestiMate.common.config.jwt.JwtAuthenticationFilter;
+import com.server.InvestiMate.common.config.jwt.JwtUtil;
+import com.server.InvestiMate.common.config.jwt.OAuth2LoginSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,13 +21,17 @@ import java.util.Collections;
 
 /**
  *  Spring Security 설정
- *
- *  OAuth2.0
+ *  - CORS
+ *  - OAuth2.0 + JWT
  */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtUtil jwtUtil;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,7 +44,15 @@ public class SecurityConfig {
 
         http
                 .httpBasic((basic) -> basic.disable());
-
+        //JWTFilter 추가
+        http
+                .addFilterAfter(new JwtAuthenticationFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                        .userService(customOAuth2UserService))
+                        .successHandler(oAuth2LoginSuccessHandler)
+                );
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/**").permitAll()
