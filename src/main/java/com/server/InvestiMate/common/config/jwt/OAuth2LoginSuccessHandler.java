@@ -1,6 +1,5 @@
 package com.server.InvestiMate.common.config.jwt;
 
-import com.nimbusds.jose.shaded.gson.Gson;
 import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -9,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -33,12 +31,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String oAuth2Id = principal.getOAuth2Id();
         String authorities = principal.getAuthorities().toString();
-        String accessToken = jwtUtil.generateJwt("access", oAuth2Id, authorities, (long) JwtConstants.ACCESS_EXP_TIME);
-        String refreshToken = jwtUtil.generateJwt("refresh", oAuth2Id, authorities, (long) JwtConstants.REFRESH_EXP_TIME);
+        String accessToken = jwtUtil.generateAccessToken("access", oAuth2Id, authorities, jwtUtil.accessTokenExpireLength);
+        String refreshToken = jwtUtil.generateRefreshToken("refresh", oAuth2Id, jwtUtil.refreshTokenExpireLength);
 
 //        response.setHeader("access", accessToken);
         response.addCookie(createCookie("access", accessToken));
-        response.sendRedirect("http://localhost:3000/");
+        response.addCookie(createCookie("refresh", refreshToken));
+        response.sendRedirect(jwtUtil.JWT_REDIRECT);
     }
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);

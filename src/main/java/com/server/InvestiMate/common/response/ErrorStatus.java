@@ -37,8 +37,14 @@ public enum ErrorStatus {
     UNAUTHORIZED_TOKEN("유효하지 않은 토큰입니다."),
     KAKAO_UNAUTHORIZED_USER("카카오 로그인 실패. 만료되었거나 잘못된 카카오 토큰입니다."),
     FAILED_TO_VALIDATE_APPLE_LOGIN("애플 로그인 실패. 만료되었거나 잘못된 애플 토큰입니다."),
-    SIGNIN_REQUIRED("access, refreshToken 모두 만료되었습니다. 재로그인이 필요합니다."),
+    SIGNIN_REQUIRED("엑세스 토큰 및 리프레쉬 토큰 모두 만료되었습니다. 재로그인이 필요합니다."),
     VALID_ACCESS_TOKEN("아직 유효한 accessToken 입니다."),
+
+    EMPTY_JWT("JWT가 비어있습니다."),
+    EXPIRED_ACCESS("엑세스 토큰이 만료됐습니다."),
+    UNSUPPORTED_TOKEN("지원하지 않는 형식의 토큰입니다."),
+    INVALID_SIGNATURE("유효하지 않은 서명입니다."),
+    INVALID_TOKEN("유효하지 않은 뒷부분입니다."),
 
     /**
      * 404 NOT_FOUND

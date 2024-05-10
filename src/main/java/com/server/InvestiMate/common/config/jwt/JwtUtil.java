@@ -3,11 +3,13 @@ package com.server.InvestiMate.common.config.jwt;
 import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
 import com.server.InvestiMate.api.member.domain.Member;
 import com.server.InvestiMate.api.member.domain.RoleType;
-import com.server.InvestiMate.common.config.jwt.exception.CustomExpiredJwtException;
-import com.server.InvestiMate.common.config.jwt.exception.CustomJwtException;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
+import com.server.InvestiMate.api.member.repository.MemberRepository;
+import com.server.InvestiMate.common.config.jwt.exception.JwtExceptionType;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,95 +20,105 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
-import java.util.Set;
 
-import static com.server.InvestiMate.common.config.jwt.JwtConstants.secret;
-
+/**
+ * https://github.com/jwtk/jjwt
+ */
+@Slf4j
 @Component
 public class JwtUtil {
-
+    @Value("${spring.jwt.expire-length.access-expire}")
+    protected Long accessTokenExpireLength;
+    @Value("${spring.jwt.expire-length.refresh-expire}")
+    protected Long refreshTokenExpireLength;
+    @Value("${spring.jwt.redirect-url}")
+    protected String JWT_REDIRECT;
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     private SecretKey secretKey;
-
-    public JwtUtil(@Value("${spring.jwt.secret}")String secret) {
+    // UTF-8로 인코딩된 비밀키를 바이트 배열로 변환하고, HS256 알고리즘으로 JWT 서명에 사용할 SecretKey를 생성
+    public JwtUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
-
-    public static String getTokenFromHeader(String header) {
-        return header.split(" ")[1];
-    }
-
-    public static Authentication getAuthentication(String token) {
-        Map<String, Object> claims = validateToken(token);
-
-        String oAuth2Id = (String) claims.get("oAuth2Id");
-        String name = (String) claims.get("name");
-        String role = (String) claims.get("role");
-        RoleType memberRole = RoleType.valueOf(role);
-
-        Member jwtDto = Member.builder()
-                .oAuth2Id(oAuth2Id)
-                .name(name)
-                .roleType(memberRole)
-                .build();
-
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(jwtDto.getRoleType().getKey()));
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(jwtDto);
-        return new UsernamePasswordAuthenticationToken(customOAuth2User, null, authorities);
-    }
-
-    public String getCategory(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
-    }
-
-    public String getOAuth2Id(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("oAuth2Id", String.class);
-    }
-
-    public String getRole(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
-    }
-
-    public static Map<String, Object> validateToken(String token) {
-        Map<String, Object> claim = null;
-        try {
-            SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-            claim = Jwts.parser()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
-                    .getBody();
-        } catch(ExpiredJwtException expiredJwtException){
-            throw new CustomExpiredJwtException("토큰이 만료되었습니다", expiredJwtException);
-        } catch(Exception e){
-            throw new CustomJwtException("Error");
-        }
-        return claim;
-    }
-
-    // 토큰이 만료되었는지 판단하는 메서드
-    public static boolean isExpired(String token) {
-        try {
-            validateToken(token);
-        } catch (Exception e) {
-            return (e instanceof CustomExpiredJwtException);
-        }
-        return false;
-    }
-
-    public String generateJwt(String category, String oAuth2Id, String role, Long expiredMs) {
+    /**
+     * 토큰 생성
+     */
+    public String generateAccessToken(String category, String oAuth2Id, String role, Long expiredMs) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + expiredMs);
 
         return Jwts.builder()
                 .claim("category", category)
                 .claim("oAuth2Id", oAuth2Id)
                 .claim("role", role)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                .issuedAt(now)
+                .expiration(expiration)
                 .signWith(secretKey)
                 .compact();
     }
+    public String generateRefreshToken(String category, String oAuth2Id, Long expiredMs) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + expiredMs);
+
+        return Jwts.builder()
+                .claim("category", category)
+                .claim("oAuth2Id", oAuth2Id)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(secretKey)
+                .compact();
+    }
+
+
+    public String parseToken(HttpServletRequest request) {
+        String header = request.getHeader(AUTHORIZATION_HEADER);
+
+        if (header == null || !header.startsWith("Bearer ")) {
+            return null;
+        } else {
+            return header.split(" ")[1];
+        }
+    }
+
+    // 토큰 유효성 검증
+    public JwtExceptionType validateToken(String token) {
+        try {
+            // JWT 파서를 생성하고, parseClaimsJws(token) 메소드로 토큰의 유효성을 검증
+            Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token);
+            return JwtExceptionType.VALID_JWT_TOKEN;
+        } catch (io.jsonwebtoken.security.SignatureException exception) {
+            log.error("잘못된 JWT 서명을 가진 토큰입니다.");
+            return JwtExceptionType.INVALID_JWT_SIGNATURE;
+        } catch (MalformedJwtException exception) {
+            log.error("잘못된 JWT 토큰입니다.");
+            return JwtExceptionType.INVALID_JWT_TOKEN;
+        } catch (ExpiredJwtException exception) {
+            log.error("만료된 JWT 토큰입니다.");
+            return JwtExceptionType.EXPIRED_JWT_TOKEN;
+        } catch (UnsupportedJwtException exception) {
+            log.error("지원하지 않는 JWT 토큰입니다.");
+            return JwtExceptionType.UNSUPPORTED_JWT_TOKEN;
+        } catch (IllegalArgumentException exception) {
+            log.error("JWT Claims가 비어있습니다.");
+            return JwtExceptionType.EMPTY_JWT;
+        }
+    }
+
+    public String getOAuth2Id(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("oAuth2Id", String.class);
+    }
+
+    public RoleType getRole(String token) {
+        String roleString = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+        // 열거형에 해당하는 문자열을 찾아 반환하거나 기본값으로 USER를 반환합니다.
+        return Arrays.stream(RoleType.values())
+                .filter(roleType -> roleType.getKey().equals(roleString))
+                .findFirst()
+                .orElse(RoleType.USER);
+    }
+
 }

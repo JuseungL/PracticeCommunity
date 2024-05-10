@@ -1,6 +1,7 @@
 package com.server.InvestiMate.common.config;
 
 import com.server.InvestiMate.api.auth.service.CustomOAuth2UserService;
+import com.server.InvestiMate.common.config.jwt.JwtAuthenticationEntryPoint;
 import com.server.InvestiMate.common.config.jwt.JwtAuthenticationFilter;
 import com.server.InvestiMate.common.config.jwt.JwtUtil;
 import com.server.InvestiMate.common.config.jwt.OAuth2LoginSuccessHandler;
@@ -31,6 +32,7 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtUtil jwtUtil;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
@@ -46,7 +48,8 @@ public class SecurityConfig {
                 .httpBasic((basic) -> basic.disable());
         //JWTFilter 추가
         http
-                .addFilterAfter(new JwtAuthenticationFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterAfter(new JwtAuthenticationFilter(jwtUtil, jwtAuthenticationEntryPoint), OAuth2LoginAuthenticationFilter.class);
+
         http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
