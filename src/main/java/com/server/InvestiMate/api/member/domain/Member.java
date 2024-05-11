@@ -28,6 +28,9 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
+    @Column(name = "refresh_token", length = 500) // refresh_token 속성의 최대 길이를 300으로 지정
+    private String refreshToken;
+
 //    @Column(nullable = true)
 //    private String nickname;
 
@@ -38,6 +41,11 @@ public class Member extends BaseTimeEntity {
         this.name = name;
         this.email = email;
         this.roleType = roleType;
+    }
+
+    // refreshToken 업데이트 메소드
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 //    public void updateNickname(String newNickname) {

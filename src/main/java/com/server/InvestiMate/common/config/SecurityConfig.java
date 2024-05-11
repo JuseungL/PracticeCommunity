@@ -58,7 +58,7 @@ public class SecurityConfig {
                 );
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/**", "/token").permitAll()
                         .anyRequest().authenticated());
 
         http

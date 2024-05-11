@@ -1,6 +1,7 @@
 package com.server.InvestiMate.common.config.jwt;
 
 import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
+import com.server.InvestiMate.api.member.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+    private final MemberService memberService;
     private final JwtUtil jwtUtil;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -31,12 +33,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String oAuth2Id = principal.getOAuth2Id();
         String authorities = principal.getAuthorities().toString();
-        String accessToken = jwtUtil.generateAccessToken("access", oAuth2Id, authorities, jwtUtil.accessTokenExpireLength);
-        String refreshToken = jwtUtil.generateRefreshToken("refresh", oAuth2Id, jwtUtil.refreshTokenExpireLength);
+        String accessToken = jwtUtil.generateToken("access", oAuth2Id, authorities, jwtUtil.accessTokenExpireLength);
+        String refreshToken = jwtUtil.generateToken("refresh", oAuth2Id, authorities, jwtUtil.refreshTokenExpireLength);
 
 //        response.setHeader("access", accessToken);
         response.addCookie(createCookie("access", accessToken));
         response.addCookie(createCookie("refresh", refreshToken));
+
+        memberService.updateRefreshToken(oAuth2Id, refreshToken);
         response.sendRedirect(jwtUtil.JWT_REDIRECT);
     }
     private Cookie createCookie(String key, String value) {

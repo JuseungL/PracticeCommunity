@@ -1,25 +1,15 @@
 package com.server.InvestiMate.common.config.jwt;
 
-import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
-import com.server.InvestiMate.api.member.domain.Member;
 import com.server.InvestiMate.api.member.domain.RoleType;
-import com.server.InvestiMate.api.member.repository.MemberRepository;
 import com.server.InvestiMate.common.config.jwt.exception.JwtExceptionType;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -30,7 +20,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     @Value("${spring.jwt.expire-length.access-expire}")
-    protected Long accessTokenExpireLength;
+    public Long accessTokenExpireLength;
     @Value("${spring.jwt.expire-length.refresh-expire}")
     protected Long refreshTokenExpireLength;
     @Value("${spring.jwt.redirect-url}")
@@ -44,7 +34,7 @@ public class JwtUtil {
     /**
      * 토큰 생성
      */
-    public String generateAccessToken(String category, String oAuth2Id, String role, Long expiredMs) {
+    public String generateToken(String category, String oAuth2Id, String role, Long expiredMs) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + expiredMs);
 
@@ -52,18 +42,6 @@ public class JwtUtil {
                 .claim("category", category)
                 .claim("oAuth2Id", oAuth2Id)
                 .claim("role", role)
-                .issuedAt(now)
-                .expiration(expiration)
-                .signWith(secretKey)
-                .compact();
-    }
-    public String generateRefreshToken(String category, String oAuth2Id, Long expiredMs) {
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + expiredMs);
-
-        return Jwts.builder()
-                .claim("category", category)
-                .claim("oAuth2Id", oAuth2Id)
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(secretKey)
@@ -79,6 +57,9 @@ public class JwtUtil {
         } else {
             return header.split(" ")[1];
         }
+    }
+    public String getTokenFromHeader(String header) {
+        return header.split(" ")[1];
     }
 
     // 토큰 유효성 검증
