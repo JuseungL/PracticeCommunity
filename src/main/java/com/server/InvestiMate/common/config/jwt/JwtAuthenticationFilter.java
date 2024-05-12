@@ -27,13 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * JwtAuthenticationFilter를 거치지 않을 URL
      */
-    private static final String[] whitelist = {"/token"};
+    private static final String[] whitelist = {"/api/v1/auth/reissue"};
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
         return PatternMatchUtils.simpleMatch(whitelist, requestURI);
     }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

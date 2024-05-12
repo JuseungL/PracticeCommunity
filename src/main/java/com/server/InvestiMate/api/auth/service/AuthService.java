@@ -22,8 +22,7 @@ public class AuthService {
         // 리프레쉬 토큰 검증 후 유효하지 않으면 로그인 화면으로
         jwtUtil.validateToken(refreshToken);
         // 클라이언트로 부터 받은 리프레쉬 토큰으로 멤버 검색
-        Member byRefreshToken = memberRepository.findByRefreshTokenOrThrow(refreshToken);
-        System.out.println("byRefreshToken.toString() = " + byRefreshToken.toString());
+        memberRepository.findByRefreshTokenOrThrow(refreshToken);
 
         String oAuth2IdRefresh = jwtUtil.getOAuth2Id(refreshToken);
         RoleType roleRefresh = jwtUtil.getRole(refreshToken);
