@@ -27,24 +27,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("--------------------------- OAuth2UserService ---------------------------");
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        log.info("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
-
+        log.info("--------------------------- CustomOAuth2UserService ---------------------------");
         String registrationId = userRequest.getClientRegistration().getRegistrationId(); // Provider 얻기
+        OAuth2User oAuth2User = super.loadUser(userRequest);
 
         OAuth2Response oAuth2Response = null;
-
         // 각 Provider에 따라 응답 규격이 다름.
-        if (registrationId.equals("naver")) {
-            oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
-        }
-        else if (registrationId.equals("google")) {
-            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-        }
-        else {
-            return null;
-        }
+        if (registrationId.equals("naver")) {oAuth2Response = new NaverResponse(oAuth2User.getAttributes());}
+        else if (registrationId.equals("google")) {oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());}
+        else {return null;}
 
         String oAuth2Id = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
         String name = oAuth2Response.getName();
@@ -57,8 +48,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private Member saveNewMember(String oAuth2Id, String name, String email) {
-        log.info("--------------------------- SaveNewMember ---------------------------");
-
         Member newMember = Member.builder()
                 .oAuth2Id(oAuth2Id)
                 .name(name)

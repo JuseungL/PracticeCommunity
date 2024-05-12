@@ -46,16 +46,19 @@ public class SecurityConfig {
 
         http
                 .httpBasic((basic) -> basic.disable());
-        //JWTFilter 추가
+
+        // JwtAuthenticationFilter
         http
                 .addFilterAfter(new JwtAuthenticationFilter(jwtUtil, jwtAuthenticationEntryPoint), OAuth2LoginAuthenticationFilter.class);
 
+        // OAuth2.0 인증 및 SuccessHandler
         http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                         .userService(customOAuth2UserService))
                         .successHandler(oAuth2LoginSuccessHandler)
                 );
+
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/**", "/token").permitAll()

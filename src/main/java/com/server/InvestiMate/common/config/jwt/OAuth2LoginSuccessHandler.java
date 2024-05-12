@@ -26,17 +26,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("--------------------------- OAuth2LoginSuccessHandler ---------------------------");
-
         CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-
-        log.info("authentication.getPrincipal() = {}", principal);
 
         String oAuth2Id = principal.getOAuth2Id();
         String authorities = principal.getAuthorities().toString();
         String accessToken = jwtUtil.generateToken("access", oAuth2Id, authorities, jwtUtil.accessTokenExpireLength);
         String refreshToken = jwtUtil.generateToken("refresh", oAuth2Id, authorities, jwtUtil.refreshTokenExpireLength);
 
-//        response.setHeader("access", accessToken);
         response.addCookie(createCookie("access", accessToken));
         response.addCookie(createCookie("refresh", refreshToken));
 
