@@ -1,11 +1,9 @@
 package com.server.InvestiMate.common.config;
 
+import com.server.InvestiMate.api.auth.jwt.*;
+import com.server.InvestiMate.api.auth.service.AuthService;
 import com.server.InvestiMate.api.auth.service.CustomOAuth2UserService;
-import com.server.InvestiMate.common.config.jwt.JwtAuthenticationEntryPoint;
-import com.server.InvestiMate.common.config.jwt.JwtAuthenticationFilter;
-import com.server.InvestiMate.common.config.jwt.JwtUtil;
-import com.server.InvestiMate.common.config.jwt.OAuth2LoginSuccessHandler;
-import jakarta.servlet.http.HttpServletRequest;
+import com.server.InvestiMate.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -34,6 +33,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final AuthService authService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -64,10 +64,13 @@ public class SecurityConfig {
                         .requestMatchers("/**", "/token").permitAll()
                         .anyRequest().authenticated());
 
+        // Logout 필터 - /logout URI로 들어오는 요청 가로챔.
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, authService), LogoutFilter.class);
+
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
 
         return http.build();
     }

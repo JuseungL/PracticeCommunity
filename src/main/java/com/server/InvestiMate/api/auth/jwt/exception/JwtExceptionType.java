@@ -1,4 +1,4 @@
-package com.server.InvestiMate.common.config.jwt.exception;
+package com.server.InvestiMate.api.auth.jwt.exception;
 
 public enum JwtExceptionType {
     VALID_JWT_TOKEN,              // 유효한 JWT

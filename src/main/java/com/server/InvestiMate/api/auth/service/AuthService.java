@@ -4,12 +4,10 @@ import com.server.InvestiMate.api.auth.dto.response.AuthTokenResponseDto;
 import com.server.InvestiMate.api.member.domain.Member;
 import com.server.InvestiMate.api.member.domain.RoleType;
 import com.server.InvestiMate.api.member.repository.MemberRepository;
-import com.server.InvestiMate.common.config.jwt.JwtUtil;
+import com.server.InvestiMate.api.auth.jwt.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @Transactional
@@ -32,6 +30,14 @@ public class AuthService {
 
         // 새로운 엑세스 토큰을 포함한 DTO 반환
         return new AuthTokenResponseDto(newAccessToken);
+    }
+
+    public void validateRefreshAndLogout(String refreshToken) {
+        //DB에 저장되어 있는지 확인. 없면 예외!
+        Member byRefreshTokenOrThrow = memberRepository.findByRefreshTokenOrThrow(refreshToken);
+        //로그아웃 진행
+        //Refresh 토큰 DB에서 제거
+        byRefreshTokenOrThrow.updateRefreshToken(null);
     }
 
 }

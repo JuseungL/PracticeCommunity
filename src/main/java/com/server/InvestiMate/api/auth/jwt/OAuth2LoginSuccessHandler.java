@@ -1,4 +1,4 @@
-package com.server.InvestiMate.common.config.jwt;
+package com.server.InvestiMate.api.auth.jwt;
 
 import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
 import com.server.InvestiMate.api.member.service.MemberService;
@@ -13,9 +13,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor

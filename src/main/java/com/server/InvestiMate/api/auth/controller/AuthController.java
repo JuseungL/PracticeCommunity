@@ -15,9 +15,15 @@ import static com.server.InvestiMate.common.response.SuccessStatus.GET_NEW_TOKEN
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class ReissueController {
+public class AuthController {
 
     private final AuthService authService;
+
+    /**
+     * Reissuing Access Token When Access Token is Expired.
+     * @param authRequestDto
+     * @return
+     */
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<AuthTokenResponseDto>> getNewAccessToken(@RequestBody AuthRequestDto authRequestDto) {
         AuthTokenResponseDto newToken = authService.getNewToken(authRequestDto.refreshToken());

@@ -1,9 +1,9 @@
-package com.server.InvestiMate.common.config.jwt;
+package com.server.InvestiMate.api.auth.jwt;
 
 import com.server.InvestiMate.api.auth.domain.CustomOAuth2User;
+import com.server.InvestiMate.api.auth.jwt.exception.JwtExceptionType;
 import com.server.InvestiMate.api.member.domain.Member;
 import com.server.InvestiMate.api.member.domain.RoleType;
-import com.server.InvestiMate.common.config.jwt.exception.JwtExceptionType;
 import com.server.InvestiMate.common.response.ErrorStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

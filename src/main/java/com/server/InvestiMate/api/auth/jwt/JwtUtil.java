@@ -1,7 +1,7 @@
-package com.server.InvestiMate.common.config.jwt;
+package com.server.InvestiMate.api.auth.jwt;
 
 import com.server.InvestiMate.api.member.domain.RoleType;
-import com.server.InvestiMate.common.config.jwt.exception.JwtExceptionType;
+import com.server.InvestiMate.api.auth.jwt.exception.JwtExceptionType;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class JwtUtil {
      */
     public String generateToken(String category, String oAuth2Id, String role, Long expiredMs) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + expiredMs);
+        Date expiration = new Date(now.getTime() + expiredMs * 1000);
 
         return Jwts.builder()
                 .claim("category", category)
