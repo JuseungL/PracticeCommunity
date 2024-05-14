@@ -18,6 +18,9 @@ import java.io.IOException;
 /**
  *   로그아웃 메소드
  *   /login을 따로 Controller로 정의해줄 필요는 없다.
+ *
+ *   쿠키에서 리프레쉬 토큰을 꺼내 검증 후
+ *   DB에서 리프레쉬 토큰 제거(null) 및 쿠키 값 또한 지움
  */
 @RequiredArgsConstructor
 public class CustomLogoutFilter extends GenericFilterBean {
