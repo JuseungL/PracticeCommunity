@@ -4,6 +4,7 @@ import com.server.InvestiMate.api.member.domain.Member;
 import com.server.InvestiMate.common.auditing.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,12 @@ public class ChatSession extends BaseEntity {
 
     @OneToMany(mappedBy = "chatSession")
     private List<ChatMessage> messages = new ArrayList<>();
+
+    @Builder
+
+    public ChatSession(Member member, Report report, String threadId) {
+        this.member = member;
+        this.report = report;
+        this.threadId = threadId;
+    }
 }

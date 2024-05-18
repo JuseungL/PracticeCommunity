@@ -24,15 +24,11 @@ public class Report {
     @Column(name = "report_type")
     private String reportType;
 
-    @Column(name = "text_file_path")
-    private String textFilePath;
-
-    @Column(name = "table_file_path")
-    private String tableFilePath;
-
     @Column(name = "assistant_id")
     private String assistantsId;
 
-    @OneToMany(mappedBy = "reportInfo")
+    @OneToMany(mappedBy = "report")
     private List<ChatSession> chatSessions = new ArrayList<>();
+
+    public void createAssistantId(String assistantsId) { this.assistantsId = assistantsId;}
 }

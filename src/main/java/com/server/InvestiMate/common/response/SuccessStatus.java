@@ -17,6 +17,11 @@ public enum SuccessStatus {
     WITHDRAWAL_SUCCESS(HttpStatus.OK,"유저 탈퇴 성공"),
 
     /**
+     * chat
+     */
+    CREATE_THREAD_SUCCESS(HttpStatus.CREATED, "쓰레드 생성 성공"),
+
+    /**
      * content
      */
     CONTENT_LIKE_SUCCESS(HttpStatus.CREATED, "게시물 좋아요 성공"),
