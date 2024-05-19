@@ -2,7 +2,10 @@ package com.server.InvestiMate.api.chat.service;
 
 import com.server.InvestiMate.api.chat.domain.ChatSession;
 import com.server.InvestiMate.api.chat.domain.Report;
+import com.server.InvestiMate.api.chat.dto.request.ChatCreateRunDto;
 import com.server.InvestiMate.api.chat.dto.request.ChatCreateThreadDto;
+import com.server.InvestiMate.api.chat.dto.request.RunRequestDto;
+import com.server.InvestiMate.api.chat.dto.response.RunResponseDto;
 import com.server.InvestiMate.api.chat.dto.response.ThreadsResponseDto;
 import com.server.InvestiMate.api.chat.repository.ChatSessionRepository;
 import com.server.InvestiMate.api.chat.repository.ReportRepository;
@@ -23,7 +26,7 @@ public class ChatService {
     private final ChatSessionRepository chatSessionRepository;
 
 
-    public void createTread(String memberOAuth2Id, ChatCreateThreadDto chatSaveAssistantDto) {
+    public void createThread(String memberOAuth2Id, ChatCreateThreadDto chatSaveAssistantDto) {
         Integer year = Integer.valueOf(chatSaveAssistantDto.year());
         String companyName = chatSaveAssistantDto.companyName();
         String reportType = chatSaveAssistantDto.reportType();
@@ -39,4 +42,14 @@ public class ChatService {
                 .build();
         chatSessionRepository.save(chatSession);
     }
+
+//    public RunResponseDto createRun(String memberOAuth2Id, ChatCreateRunDto chatCreateRunDto) {
+//        String threadId = chatCreateRunDto.threadId();
+//        String assistantId = chatCreateRunDto.assistantId();
+//        String instruction = chatCreateRunDto.instruction();
+//        RunRequestDto runRequestDto = RunRequestDto.create(assistantId,instruction);
+//        System.out.println("runRequestDto = " + assistantsClient.createRuns(threadId, runRequestDto));
+//        String runs = "1";
+//        return runs;
+//    }
 }
