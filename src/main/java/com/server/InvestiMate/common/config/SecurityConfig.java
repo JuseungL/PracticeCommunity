@@ -61,7 +61,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**", "/token").permitAll()
+                        .requestMatchers("/**", "/token","/login").permitAll()
                         .anyRequest().authenticated());
 
         // Logout 필터 - /logout URI로 들어오는 요청 가로챔.

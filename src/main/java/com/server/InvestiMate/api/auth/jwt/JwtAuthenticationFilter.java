@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * JwtAuthenticationFilter를 거치지 않을 URL
      */
-    private static final String[] whitelist = {"/api/v1/auth/reissue"};
+    private static final String[] whitelist = {"/api/v1/auth/reissue", "/login"};
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
