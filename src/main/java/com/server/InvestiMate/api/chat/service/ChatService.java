@@ -15,6 +15,7 @@ import com.server.InvestiMate.common.client.openai.AssistantsClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor
@@ -43,13 +44,9 @@ public class ChatService {
         chatSessionRepository.save(chatSession);
     }
 
-//    public RunResponseDto createRun(String memberOAuth2Id, ChatCreateRunDto chatCreateRunDto) {
+//    public Flux<String> createRun(String memberOAuth2Id, ChatCreateRunDto chatCreateRunDto) {
 //        String threadId = chatCreateRunDto.threadId();
-//        String assistantId = chatCreateRunDto.assistantId();
-//        String instruction = chatCreateRunDto.instruction();
-//        RunRequestDto runRequestDto = RunRequestDto.create(assistantId,instruction);
-//        System.out.println("runRequestDto = " + assistantsClient.createRuns(threadId, runRequestDto));
-//        String runs = "1";
-//        return runs;
+//        return assistantsClient.createRuns(threadId, runRequestDto)
+//                .flatMapMany(runResponseDto -> Flux.fromStream(chatCreateRunDto.get.stream()));
 //    }
 }
