@@ -31,20 +31,13 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Init with Gradle
-        uses: gradle/gradle-build-action@v2
-      - run: gradle init
-
       # Gradle 실행권한 부여
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
       # Spring boot application 빌드
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 8.2
-          arguments: clean build
+        run: ./gradlew clean build
 
       # Docker Image 빌드
       - name: Build docker image
@@ -62,18 +55,18 @@ jobs:
         run: docker push juseungl/investi-mate
 
         # WAS 인스턴스 접속 & 애플리케이션 실행
-      - name: Connect to WAS & Execute Application
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.WAS_HOST }}
-          username: ${{ secrets.WAS_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.WAS_SSH_PORT }}
-          script: |
-            docker stop $(docker ps -a -q) 
-            docker rm $(docker ps -a -q) 
-            docker pull juseungl/investi-mate
-            docker run -d -p 8080:8080 --name juseungl/investi-mate
+#      - name: Connect to WAS & Execute Application
+#        uses: appleboy/ssh-action@v0.1.6
+#        with:
+#          host: ${{ secrets.WAS_HOST }}
+#          username: ${{ secrets.WAS_USERNAME }}
+#          key: ${{ secrets.SSH_KEY }}
+#          port: ${{ secrets.WAS_SSH_PORT }}
+#          script: |
+#            docker stop $(docker ps -a -q)
+#            docker rm $(docker ps -a -q)
+#            docker pull juseungl/investi-mate
+#            docker run -d -p 8080:8080 --name juseungl/investi-mate
 
 #      - name: Configure AWS credentials
 #        uses: aws-actions/configure-aws-credentials@v1
