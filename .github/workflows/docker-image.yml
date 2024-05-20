@@ -3,6 +3,8 @@ name: CI/CD with Git Actions & Docker Hub
 on:
   push:
     branches: [ "createrun" ]
+  pull_request:
+    branches: [ "createrun" ]
 
 jobs:
   build:
@@ -54,7 +56,7 @@ jobs:
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
       - name: Nginx docker build and push
         run: |
-          cd /Users/juseung/Documents/2024CD/InvestiMate/src/main/resources/nginx-config/
+          cd ./nginx-config/
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
           
           docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
