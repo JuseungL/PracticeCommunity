@@ -3,18 +3,18 @@ version: "3"
 services:
   backend:
     # DockerHub 이미지 주소
-    image: juseungl/investi-mate
-    container_name: backend
+    image: juseung/investi-mate:backend
+    container_name: backend-container
     expose:
       - 8080
     networks:
       - investimate
 
   nginx:
-    image: nginx:latest
-    container_name: nginx
+    image: juseung/investi-mate:nginx
+    container_name: nginx-container
     volumes:
-      - ./nginx_docker/nginx.conf:/etc/nginx/conf.d/default.conf # 왼쪽이 로컬 경로, 오른쪽이 도커 컨테이너 내부 경로
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # 왼쪽이 로컬 경로, 오른쪽이 도커 컨테이너 내부 경로
     # 서비스 종속관계 명시
     depends_on:
       - backend
