@@ -2,9 +2,7 @@ name: CI/CD with Git Actions & Docker Hub
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "createrun" ]
 
 jobs:
   build:
@@ -47,16 +45,16 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Spring boot application 도커 이미지 빌드 후 도커허브에 push하기
-      - name: Publish to docker hub
+      - name: Spring boot app docker build and publish
         run:
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:backend --platform linux/amd64 .
           
           docker push ${{ secrets.DOCKER_REPOSITORY }}:backend
 
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
-      - name: web nginx docker build and push
+      - name: Nginx docker build and push
         run: |
-          cd ./nginx-config
+          cd /Users/juseung/Documents/2024CD/InvestiMate/src/main/resources/nginx-config/
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
           
           docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
