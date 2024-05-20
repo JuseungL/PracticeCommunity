@@ -2,9 +2,9 @@ name: CI/CD with Git Actions & Docker Hub
 
 on:
   push:
-    branches: [ "chatbot" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "chatbot" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -54,17 +54,19 @@ jobs:
       - name: Publish to docker hub
         run: docker push juseungl/investi-mate
 
-        # WAS 인스턴스 접속 & 애플리케이션 실행
+#        # Remote SSH로 EC2 인스턴스 접속 & 애플리케이션 실행
 #      - name: Connect to WAS & Execute Application
 #        uses: appleboy/ssh-action@v0.1.6
 #        with:
-#          host: ${{ secrets.WAS_HOST }}
-#          username: ${{ secrets.WAS_USERNAME }}
-#          key: ${{ secrets.SSH_KEY }}
-#          port: ${{ secrets.WAS_SSH_PORT }}
+#          host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
+#          username: ubuntu
+#          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
+#          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
 #          script: |
 #            docker stop $(docker ps -a -q)
 #            docker rm $(docker ps -a -q)
+#            docker rmi $(sudo docker images -q)
+#
 #            docker pull juseungl/investi-mate
 #            docker run -d -p 8080:8080 --name juseungl/investi-mate
 
