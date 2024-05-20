@@ -50,6 +50,7 @@ jobs:
       - name: Publish to docker hub
         run:
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:backend --platform linux/amd64 .
+          
           docker push ${{ secrets.DOCKER_REPOSITORY }}:backend
 
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
@@ -57,18 +58,19 @@ jobs:
         run: |
           cd ./nginx-config
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
+          
           docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
 
-      # nginx 설정 파일 서버로 전달하기(복사 후 붙여넣기)
-      - name: Send nginx.conf
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
-          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
-          source: "./nginx.conf"
-          target: "/home/ubuntu/workspace/server/"
+#      # nginx 설정 파일 서버로 전달하기(복사 후 붙여넣기)
+#      - name: Send nginx.conf
+#        uses: appleboy/scp-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
+#          username: ubuntu
+#          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
+#          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
+#          source: "./nginx.conf"
+#          target: "/home/ubuntu/workspace/server/"
 
       # compose.yml 설정 파일 서버로 전달하기(복사 후 붙여넣기)
       - name: Send compose.yml
@@ -83,7 +85,7 @@ jobs:
 
       # nginx.conf 경로 변경 후 도커 컴포즈 실행하기
       # 도커 허브에서 jar파일 및 pull후에 컴포즈 up
-      - name: Deploy to Dev
+      - name: Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
