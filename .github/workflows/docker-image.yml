@@ -50,15 +50,14 @@ jobs:
       - name: Spring boot app docker build and publish
         run:
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:backend --platform linux/amd64 .
-          
+
           docker push ${{ secrets.DOCKER_REPOSITORY }}:backend
 
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
       - name: Nginx docker build and push
         run: |
-          cd ./nginx-config/
+          cd ./src/main/resources/nginx-config/
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
-          
           docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
 
 #      # nginx 설정 파일 서버로 전달하기(복사 후 붙여넣기)
@@ -96,7 +95,7 @@ jobs:
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
-            cd workspace/server
+            cd /home/ubuntu/workspace/server/
             docker-compose down
             docker rmi $(docker images -q)
             docker-compose up -d
