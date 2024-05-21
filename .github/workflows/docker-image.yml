@@ -96,9 +96,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
             cd /home/ubuntu/workspace/server/
-            compose down
-            docker rmi $(docker images -q)
-            compose up -d
+            sudo docker-compose up -d
 
 #        # Remote SSH로 EC2 인스턴스 접속 & 애플리케이션 실행
 #      - name: Connect to WAS & Execute Application
