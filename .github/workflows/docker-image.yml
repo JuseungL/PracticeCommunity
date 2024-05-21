@@ -2,9 +2,9 @@ name: CI/CD with Git Actions & Docker Hub
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "createrun" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "createrun" ]
 
 jobs:
   build:
@@ -47,18 +47,17 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Spring boot application 도커 이미지 빌드 후 도커허브에 push하기
-      - name: Publish to docker hub
+      - name: Spring boot app docker build and publish
         run:
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:backend --platform linux/amd64 .
-          
+
           docker push ${{ secrets.DOCKER_REPOSITORY }}:backend
 
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
-      - name: web nginx docker build and push
+      - name: Nginx docker build and push
         run: |
-          cd ./nginx-config
+          cd ./src/main/resources/nginx-config/
           docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
-          
           docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
 
 #      # nginx 설정 파일 서버로 전달하기(복사 후 붙여넣기)
@@ -80,7 +79,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
           port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
-          source: "./docker-compose.yml"
+          source: "./compose.yml"
           target: "/home/ubuntu/workspace/server/"
 
       # nginx.conf 경로 변경 후 도커 컴포즈 실행하기
@@ -96,10 +95,10 @@ jobs:
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
-            cd workspace/server
-            docker-compose down
+            cd /home/ubuntu/workspace/server/
+            compose down
             docker rmi $(docker images -q)
-            docker-compose up -d
+            compose up -d
 
 #        # Remote SSH로 EC2 인스턴스 접속 & 애플리케이션 실행
 #      - name: Connect to WAS & Execute Application
