@@ -79,7 +79,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
           port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
-          source: "./docker-compose.yml"
+          source: "./compose.yml"
           target: "/home/ubuntu/workspace/server/"
 
       # nginx.conf 경로 변경 후 도커 컴포즈 실행하기
@@ -96,9 +96,9 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
             cd /home/ubuntu/workspace/server/
-            docker-compose down
+            compose down
             docker rmi $(docker images -q)
-            docker-compose up -d
+            compose up -d
 
 #        # Remote SSH로 EC2 인스턴스 접속 & 애플리케이션 실행
 #      - name: Connect to WAS & Execute Application
