@@ -3,7 +3,7 @@ version: "3"
 services:
   backend:
     # DockerHub 이미지 주소
-    image: juseung/investi-mate:backend
+    image: juseungl/investi-mate:backend
     container_name: backend-container
     expose:
       - 8080
@@ -11,7 +11,7 @@ services:
       - investimate
 
   nginx:
-    image: juseung/investi-mate:nginx
+    image: juseungl/investi-mate:nginx
     container_name: nginx-container
     # 서비스 종속관계 명시
     depends_on:
