@@ -25,7 +25,7 @@ jobs:
       # .env파일 생성 -> OPEN AI API키 보관용
       - name: Set .env file
         run: |
-          echo ${{ secrets.ENV_FILE }} | base64 --decode > .env
+          echo ${{ secrets.OPENAI_API_KEY }} | base64 --decode > .env
 
       # Open JDk 21
       - name: Set up JDK 21
