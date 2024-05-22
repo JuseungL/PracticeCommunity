@@ -37,14 +37,8 @@ public class ChatController {
     /**
      * 질문 전달 후 응답 받기
      */
-//    @PostMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    @PostMapping(value = "/run/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 //    public Flux<String> createRunStream(@PathVariable String threadId, @RequestBody ChatCreateRunDto chatCreateRunDto) {
 //        return chatService.createRun(threadId, chatCreateRunDto);
-//    }
-//    @PostMap3ping("/run")
-//    public ResponseEntity<ApiResponse<Object>> createRun(Principal principal, @RequestBody ChatCreateRunDto chatCreateRunDto) {
-//        String memberOAuth2Id = MemberUtil.getMemberOAuth2Id(principal);
-//        RunResponseDto run = chatService.createRun(memberOAuth2Id, chatCreateRunDto);
-//        return ApiResponse.success(SuccessStatus.CREATE_THREAD_SUCCESS);
 //    }
 }
