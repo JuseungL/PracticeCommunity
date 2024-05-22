@@ -44,9 +44,4 @@ public class ChatService {
         chatSessionRepository.save(chatSession);
     }
 
-//    public Flux<String> createRun(String memberOAuth2Id, ChatCreateRunDto chatCreateRunDto) {
-//        String threadId = chatCreateRunDto.threadId();
-//        return assistantsClient.createRuns(threadId, runRequestDto)
-//                .flatMapMany(runResponseDto -> Flux.fromStream(chatCreateRunDto.get.stream()));
-//    }
 }
