@@ -99,9 +99,9 @@ jobs:
 #          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
 #          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
 #          script: |
-#            docker stop $(docker ps -a -q)
-#            docker rm $(docker ps -a -q)
-#            docker rmi $(sudo docker images -q)
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker rmi $(sudo docker images -q)
 #
 #            docker pull juseungl/investi-mate
 #            docker run -d -p 8080:8080 --name juseungl/investi-mate

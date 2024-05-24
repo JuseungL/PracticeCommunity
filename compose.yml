@@ -4,8 +4,8 @@ services:
   frontend:
     image: juseungl/investi-mate:frontend
     container_name: frontend-container
-    ports:
-      - "3000:3000"  # frontend 서비스를 3000 포트에 노출
+    expose:
+      - 3000
     networks:
       - investimate
 
