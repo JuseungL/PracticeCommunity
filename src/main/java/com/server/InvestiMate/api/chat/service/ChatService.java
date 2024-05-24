@@ -15,7 +15,6 @@ import com.server.InvestiMate.common.client.openai.AssistantsClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,14 @@
 version: "3"
 
 services:
+  frontend:
+    image: juseungl/investi-mate:frontend
+    container_name: frontend-container
+    expose:
+      - 3000
+    networks:
+      - investimate
+
   backend:
     # DockerHub 이미지 주소
     image: juseungl/investi-mate:backend
@@ -16,6 +24,7 @@ services:
     # 서비스 종속관계 명시
     depends_on:
       - backend
+      - frontend
     restart: always
     ports:
       - "80:80"
