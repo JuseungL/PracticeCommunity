@@ -13,6 +13,8 @@ services:
     # DockerHub 이미지 주소
     image: juseungl/investi-mate:backend
     container_name: backend-container
+    volumes:
+      - /home/ubuntu/workspace/logs:/log
     expose:
       - 8080
     networks:
