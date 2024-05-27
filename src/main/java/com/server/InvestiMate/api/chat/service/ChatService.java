@@ -2,10 +2,7 @@ package com.server.InvestiMate.api.chat.service;
 
 import com.server.InvestiMate.api.chat.domain.ChatSession;
 import com.server.InvestiMate.api.chat.domain.Report;
-import com.server.InvestiMate.api.chat.dto.request.ChatCreateRunDto;
 import com.server.InvestiMate.api.chat.dto.request.ChatCreateThreadDto;
-import com.server.InvestiMate.api.chat.dto.request.RunRequestDto;
-import com.server.InvestiMate.api.chat.dto.response.RunResponseDto;
 import com.server.InvestiMate.api.chat.dto.response.ThreadsResponseDto;
 import com.server.InvestiMate.api.chat.repository.ChatSessionRepository;
 import com.server.InvestiMate.api.chat.repository.ReportRepository;

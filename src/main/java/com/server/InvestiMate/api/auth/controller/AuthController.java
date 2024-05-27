@@ -5,6 +5,7 @@ import com.server.InvestiMate.api.auth.dto.response.AuthTokenResponseDto;
 
 import com.server.InvestiMate.api.auth.service.AuthService;
 import com.server.InvestiMate.common.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("/reissue")
-    public ResponseEntity<ApiResponse<AuthTokenResponseDto>> getNewAccessToken(@RequestBody AuthRequestDto authRequestDto) {
+    public ResponseEntity<ApiResponse<AuthTokenResponseDto>> getNewAccessToken(@Valid @RequestBody AuthRequestDto authRequestDto) {
         AuthTokenResponseDto newToken = authService.getNewToken(authRequestDto.refreshToken());
         return ApiResponse.success(GET_NEW_TOKEN_SUCCESS, newToken);
     }

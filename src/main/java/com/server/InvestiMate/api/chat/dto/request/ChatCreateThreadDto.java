@@ -1,8 +1,10 @@
 package com.server.InvestiMate.api.chat.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ChatCreateThreadDto(
-        String year,
-        String companyName,
-        String reportType
+        @NotBlank String year,
+        @NotBlank String companyName,
+        @NotBlank String reportType
 ) {
 }

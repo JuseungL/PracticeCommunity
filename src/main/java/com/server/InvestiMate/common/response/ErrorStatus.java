@@ -12,7 +12,8 @@ public enum ErrorStatus {
      * 400 BAD_REQUEST
      */
     VALIDATION_EXCEPTION("잘못된 요청입니다."),
-    VALIDATION_REQUEST_MISSING_EXCEPTION("요청값이 입력되지 않았습니다."),
+    INVALID_REQUEST_PARAMETER("Request Parameter 값이 입력되지 않았습니다."),
+    INVALID_REQUEST_BODY("Request Body가 누락됐거나 올바르지 않은 형식입니다."),
     NO_TOKEN("토큰을 넣어주세요."),
     INVALID_MEMBER("유효하지 않은 유저입니다."),
     ANOTHER_ACCESS_TOKEN("지원하지 않는 소셜 플랫폼입니다."),
@@ -55,6 +56,11 @@ public enum ErrorStatus {
     NOT_FOUND_COMMENT("해당하는 답글이 없습니다."),
     UNEXIST_COMMENT_LIKE("좋아요를 누르지 않은 답글입니다."),
 
+
+    /**
+     * 405 METHOD_NOT_ALLOWED
+     */
+    INVALID_PATHVARIABLE_HTTTPMETHOD("요청 URL이 잘못됐습니다. - HTTP Method 또는 Path Variable을 확인해주세요"),
 
     /**
      * 500 SERVER_ERROR

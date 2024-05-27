@@ -6,7 +6,9 @@ import com.server.InvestiMate.api.member.service.MemberService;
 import com.server.InvestiMate.common.response.ApiResponse;
 import com.server.InvestiMate.common.response.SuccessStatus;
 import com.server.InvestiMate.common.util.MemberUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +26,16 @@ public class MemberController {
         System.out.println("MemberUtil.getMemberOAuth2Id(principal) = " + MemberUtil.getMemberOAuth2Id(principal));
         return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfile(memberId));
     }
+    @GetMapping("/profile")
+    public ResponseEntity<ApiResponse<MemberGetProfileResponseDto>> getMemberProfile2(Principal principal, @RequestParam(name = "memberId") Long memberId) {
+        System.out.println("MemberUtil.getMemberOAuth2Id(principal) = " + MemberUtil.getMemberOAuth2Id(principal));
+        return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfile(memberId));
+    }
+
 
     // Member 유저 프로필 등록
     @PostMapping("/profile")
-    public ResponseEntity<ApiResponse<Object>> saveMemberProfile(Principal principal, @RequestBody MemberSaveProfileDto memberSaveProfileDto) {
+    public ResponseEntity<ApiResponse<Object>> saveMemberProfile(Principal principal, @Valid @RequestBody MemberSaveProfileDto memberSaveProfileDto) {
         String memberOAuth2Id = MemberUtil.getMemberOAuth2Id(principal);
         memberService.saveMemberProfile(memberOAuth2Id, memberSaveProfileDto);
         return ApiResponse.success(SuccessStatus.SAVE_MEMBER_PROFILE);
