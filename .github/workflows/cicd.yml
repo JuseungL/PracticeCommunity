@@ -3,7 +3,7 @@ name: CI/CD with Git Actions & Docker Hub
 # 워크플로우 트리거: 브랜치에 대한 push 및 pull request 이벤트 발생 시 실행
 on:
   push:
-    branches: [ "soloauth" ]
+    branches: [ "13-log-back" ]
 
 jobs:
   build:
@@ -55,11 +55,11 @@ jobs:
           docker push ${{ secrets.DOCKER_REPOSITORY }}:backend
 
       # nginx 도커 이미지 빌드 후 도커허브에 push하기
-      - name: Build and push Nginx Docker image
-        run: |
-          cd ./src/main/resources/nginx-config/
-          docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
-          docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
+#      - name: Build and push Nginx Docker image
+#        run: |
+#          cd ./src/main/resources/nginx-config/
+#          docker build -t ${{ secrets.DOCKER_REPOSITORY }}:nginx --platform linux/amd64 .
+#          docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
 
       # Docker Compose 설정 파일을 EC2 인스턴스로 전송
       - name: Send compose.yml
@@ -83,7 +83,7 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
-            sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
+#            sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
 #            cd /home/ubuntu/workspace/server/
 #            sudo docker-compose down
 #            sudo docker rmi $(docker images -q)
