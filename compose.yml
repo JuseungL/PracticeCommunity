@@ -13,6 +13,7 @@ services:
     # DockerHub 이미지 주소
     image: juseungl/investi-mate:backend
     container_name: backend-container
+    # Log File을 위한 Volume Mounting
     volumes:
       - /home/ubuntu/workspace/logs:/log
     expose:
