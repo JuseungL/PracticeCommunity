@@ -43,13 +43,13 @@
     </springProfile>
 
     <!-- 개발 및 스테이징 프로파일 설정 -->
-    <springProfile name="dev|stg">
-        <!-- 루트 로거 레벨을 INFO로 설정하고 CONSOLE, FILE appender에 참조 -->
-        <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="FILE" />
-        </root>
-    </springProfile>
+<!--    <springProfile name="dev|stg">-->
+<!--        &lt;!&ndash; 루트 로거 레벨을 INFO로 설정하고 CONSOLE, FILE appender에 참조 &ndash;&gt;-->
+<!--        <root level="INFO">-->
+<!--            <appender-ref ref="CONSOLE" />-->
+<!--            <appender-ref ref="FILE" />-->
+<!--        </root>-->
+<!--    </springProfile>-->
 
     <!-- 프로덕션 프로파일 설정 -->
     <springProfile name="prod">
