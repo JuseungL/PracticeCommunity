@@ -3,7 +3,7 @@ name: CI/CD with Git Actions & Docker Hub
 # 워크플로우 트리거: 브랜치에 대한 push 및 pull request 이벤트 발생 시 실행
 on:
   push:
-    branches: [ "13-log-back" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -62,15 +62,15 @@ jobs:
 #          docker push ${{ secrets.DOCKER_REPOSITORY }}:nginx
 
       # Docker Compose 설정 파일을 EC2 인스턴스로 전송
-      - name: Send compose.yml
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
-          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
-          source: "./compose.yml"
-          target: "/home/ubuntu/workspace/server/"
+#      - name: Send compose.yml
+#        uses: appleboy/scp-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }} # 퍼블릭 IPv4 DNS
+#          username: ubuntu
+#          key: ${{ secrets.SSH_KEY }} # cat {ec2_instance_name}.pem
+#          port: ${{ secrets.SSH_PORT }} # 보안 그룹 인바운드 규칙의 SSH Port Number
+#          source: "./compose.yml"
+#          target: "/home/ubuntu/workspace/server/"
 
       # EC2 인스턴스에서 Docker 이미지를 pull하고 Docker Compose를 사용하여 애플리케이션을 배포
       - name: Deploy at EC2 instance
@@ -83,6 +83,8 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:backend
+            cd /home/ubuntu/workspace/server/
+            sudo docker-compose down
 #            sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}:nginx
 #            cd /home/ubuntu/workspace/server/
 #            sudo docker-compose down
