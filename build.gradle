@@ -48,13 +48,6 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 	implementation 'com.auth0:java-jwt:4.4.0'
-
-	// For Chat Bot - OpenAI
-	implementation 'io.github.cdimascio:dotenv-java:2.3.2'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-	// Influx DB
-	implementation 'org.influxdb:influxdb-java:2.8'
 }
 
 dependencyManagement {
