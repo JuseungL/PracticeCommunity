@@ -34,13 +34,13 @@ public class JwtUtil {
     /**
      * 토큰 생성
      */
-    public String generateToken(String category, String oAuth2Id, String role, Long expiredMs) {
+    public String generateToken(String category, Long memberId, String role, Long expiredMs) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + expiredMs * 1000);
 
         return Jwts.builder()
                 .claim("category", category)
-                .claim("oAuth2Id", oAuth2Id)
+                .claim("memberId", memberId)
                 .claim("role", role)
                 .issuedAt(now)
                 .expiration(expiration)
@@ -89,8 +89,8 @@ public class JwtUtil {
         }
     }
 
-    public String getOAuth2Id(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("oAuth2Id", String.class);
+    public Long getMemberId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("memberId", Long.class);
     }
 
     public RoleType getRole(String token) {

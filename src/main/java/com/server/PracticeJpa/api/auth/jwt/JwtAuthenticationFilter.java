@@ -41,18 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         JwtExceptionType validateResult = jwtUtil.validateToken(accessToken);
 
         if (validateResult == JwtExceptionType.VALID_JWT_TOKEN) {
-            // 토큰에서 username과 role 획득
-            String oAuth2Id = jwtUtil.getOAuth2Id(accessToken);
+            // 토큰에서 memberId와 role 획득
+            Long memberId = jwtUtil.getMemberId(accessToken);
             RoleType role = jwtUtil.getRole(accessToken);
 
             Member jwtInfo = Member.builder()
-                    .oAuth2Id(oAuth2Id)
                     .roleType(role)
                     .build();
             // UserDetails에 회원 정보 객체 담기
             CustomOAuth2User customOAuth2User = new CustomOAuth2User(jwtInfo);
             // 스프링 시큐리티 인증 토큰 생성
-            Authentication authentication = new UsernamePasswordAuthenticationToken(oAuth2Id, null, customOAuth2User.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(memberId, null, customOAuth2User.getAuthorities());
             // 세션에 사용자 등록
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
