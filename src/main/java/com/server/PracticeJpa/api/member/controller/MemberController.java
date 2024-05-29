@@ -22,21 +22,15 @@ public class MemberController {
     // 특정 Member 정보 조회
     @GetMapping("/profile/{memberId}")
     public ResponseEntity<ApiResponse<MemberGetProfileResponseDto>> getMemberProfile(Principal principal, @PathVariable(name = "memberId") Long memberId) {
-        System.out.println("MemberUtil.getMemberOAuth2Id(principal) = " + MemberUtil.getMemberOAuth2Id(principal));
+        System.out.println("MemberUtil.getMemberOAuth2Id(principal) = " + MemberUtil.getMemberId(principal));
         return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfile(memberId));
     }
-    @GetMapping("/profile")
-    public ResponseEntity<ApiResponse<MemberGetProfileResponseDto>> getMemberProfile2(Principal principal, @RequestParam(name = "memberId") Long memberId) {
-        System.out.println("MemberUtil.getMemberOAuth2Id(principal) = " + MemberUtil.getMemberOAuth2Id(principal));
-        return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfile(memberId));
-    }
-
 
     // Member 유저 프로필 등록
     @PostMapping("/profile")
     public ResponseEntity<ApiResponse<Object>> saveMemberProfile(Principal principal, @Valid @RequestBody MemberSaveProfileDto memberSaveProfileDto) {
-        String memberOAuth2Id = MemberUtil.getMemberOAuth2Id(principal);
-        memberService.saveMemberProfile(memberOAuth2Id, memberSaveProfileDto);
+        Long memberId = MemberUtil.getMemberId(principal);
+        memberService.saveMemberProfile(memberId, memberSaveProfileDto);
         return ApiResponse.success(SuccessStatus.SAVE_MEMBER_PROFILE);
     }
 }

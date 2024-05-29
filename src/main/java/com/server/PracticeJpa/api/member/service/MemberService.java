@@ -20,15 +20,15 @@ public class MemberService {
         return MemberGetProfileResponseDto.of(member);
     }
 
-    public void updateRefreshToken(String oAuth2Id, String refreshToken) {
-        Member member = memberRepository.findByoAuth2Id(oAuth2Id)
+    public void updateRefreshToken(Long memberId, String refreshToken) {
+        Member member = memberRepository.findMemberById(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
         member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
     }
 
-    public void saveMemberProfile(String oAuth2Id, MemberSaveProfileDto memberSaveProfileDto) {
-        Member byoAuth2Id = memberRepository.findByoAuth2IdOrThrow(oAuth2Id);
+    public void saveMemberProfile(Long memberId, MemberSaveProfileDto memberSaveProfileDto) {
+        Member byoAuth2Id = memberRepository.findMemberByIdOrThrow(memberId);
         String nickname = memberSaveProfileDto.nickname();
         String memberIntro = memberSaveProfileDto.memberIntro();
         byoAuth2Id.updateNickname(nickname);

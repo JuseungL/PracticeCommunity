@@ -22,11 +22,11 @@ public enum SuccessStatus {
     CREATE_THREAD_SUCCESS(HttpStatus.CREATED, "쓰레드 생성 성공"),
 
     /**
-     * content
+     * Content
      */
     CONTENT_LIKE_SUCCESS(HttpStatus.CREATED, "게시물 좋아요 성공"),
     GET_CONTENT_DETAIL_SUCCESS(HttpStatus.OK, "게시물 상세 조회 성공"),
-    POST_CONTENT_SUCCESS(HttpStatus.CREATED,"게시글 작성 성공"),
+    CREATE_CONTENT_SUCCESS(HttpStatus.CREATED,"게시글 작성 성공"),
     DELETE_CONTENT_SUCCESS(HttpStatus.OK,"게시글 삭제 성공"),
     CONTENT_UNLIKE_SUCCESS(HttpStatus.OK,"게시글 좋아요 취소 성공"),
     GET_CONTENT_ALL_SUCCESS(HttpStatus.OK, "게시물 리스트 조회 성공"),

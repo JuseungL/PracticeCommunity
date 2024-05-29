@@ -22,11 +22,11 @@ public class AuthService {
         // 클라이언트로 부터 받은 리프레쉬 토큰으로 멤버 검색
         memberRepository.findByRefreshTokenOrThrow(refreshToken);
 
-        String oAuth2IdRefresh = jwtUtil.getOAuth2Id(refreshToken);
+        Long memberIdRefresh = jwtUtil.getMemberId(refreshToken);
         RoleType roleRefresh = jwtUtil.getRole(refreshToken);
 
         // 새로운 엑세스 토큰 생성
-        String newAccessToken = jwtUtil.generateToken("access", oAuth2IdRefresh, String.valueOf(roleRefresh), jwtUtil.accessTokenExpireLength);
+        String newAccessToken = jwtUtil.generateToken("access", memberIdRefresh, String.valueOf(roleRefresh), jwtUtil.accessTokenExpireLength);
 
         // 새로운 엑세스 토큰을 포함한 DTO 반환
         return new AuthTokenResponseDto(newAccessToken);
