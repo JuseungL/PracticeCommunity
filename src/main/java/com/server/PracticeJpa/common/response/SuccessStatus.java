@@ -27,6 +27,7 @@ public enum SuccessStatus {
     CONTENT_LIKE_SUCCESS(HttpStatus.CREATED, "게시물 좋아요 성공"),
     GET_CONTENT_DETAIL_SUCCESS(HttpStatus.OK, "게시물 상세 조회 성공"),
     CREATE_CONTENT_SUCCESS(HttpStatus.CREATED,"게시글 작성 성공"),
+    UPDATE_CONTENT_SUCCESS(HttpStatus.OK, "게시글 수정 성공"),
     DELETE_CONTENT_SUCCESS(HttpStatus.OK,"게시글 삭제 성공"),
     CONTENT_UNLIKE_SUCCESS(HttpStatus.OK,"게시글 좋아요 취소 성공"),
     GET_CONTENT_ALL_SUCCESS(HttpStatus.OK, "게시물 리스트 조회 성공"),
@@ -55,8 +56,8 @@ public enum SuccessStatus {
      * notification
      */
     READ_NOTIFICATION_SUCCESS(HttpStatus.OK,"노티 체크 성공"),
-    COUNT_NOTIFICATION_SUCCESS(HttpStatus.OK,"노티 개수 체크 완료")
-    ;
+    COUNT_NOTIFICATION_SUCCESS(HttpStatus.OK,"노티 개수 체크 완료");
+
 
     private final HttpStatus httpStatus;
     private final String message;

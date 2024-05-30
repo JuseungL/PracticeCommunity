@@ -29,5 +29,8 @@ public class Content extends BaseEntity {
         this.member = member;
     }
 
+    public void updateTitle(String title) { this.title = title;}
+    public void updateContentText(String contentText) {this.contentText = contentText;}
+
 
 }
