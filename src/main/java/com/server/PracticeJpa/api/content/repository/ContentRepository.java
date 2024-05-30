@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ContentCommandRepository extends JpaRepository<Content, Long> {
+public interface ContentRepository extends JpaRepository<Content, Long> {
 
     Optional<Content> findContentById(Long contentId);
 
