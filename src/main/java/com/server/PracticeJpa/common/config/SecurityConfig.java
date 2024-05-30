@@ -60,7 +60,15 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**", "/token","/login").permitAll()
+                        .requestMatchers("/**",
+                                "/token",
+                                "/login",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/index.html"
+                        )
+                        .permitAll()
                         .anyRequest().authenticated());
 
         // Logout 필터 - /logout URI로 들어오는 요청 가로챔.
@@ -78,7 +86,7 @@ public class SecurityConfig {
     private CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(Collections.singletonList("http://54.180.196.124:80"));
+            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
             configuration.setAllowedMethods(Collections.singletonList("*"));
             configuration.setAllowCredentials(true);
             configuration.setAllowedHeaders(Collections.singletonList("*"));
