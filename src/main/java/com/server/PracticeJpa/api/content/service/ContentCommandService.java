@@ -3,13 +3,11 @@ package com.server.PracticeJpa.api.content.service;
 import com.server.PracticeJpa.api.content.domain.Content;
 import com.server.PracticeJpa.api.content.dto.request.ContentCreateRequestDto;
 import com.server.PracticeJpa.api.content.dto.request.ContentPatchReqeustDto;
-import com.server.PracticeJpa.api.content.repository.ContentCommandRepository;
+import com.server.PracticeJpa.api.content.repository.ContentRepository;
 import com.server.PracticeJpa.api.member.domain.Member;
 import com.server.PracticeJpa.api.member.repository.MemberRepository;
 import com.server.PracticeJpa.common.response.ErrorStatus;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ContentCommandService {
     private final MemberRepository memberRepository;
-    private final ContentCommandRepository contentCommandRepository;
+    private final ContentRepository contentCommandRepository;
     /**
      * Create
      */

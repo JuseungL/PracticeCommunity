@@ -32,7 +32,7 @@ public class MemberController {
     }
 
     // Member 유저 프로필 등록
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ApiResponse<Object>> saveMemberProfile(Principal principal, @Valid @RequestBody MemberSaveProfileDto memberSaveProfileDto) {
         Long memberId = MemberUtil.getMemberId(principal);
         memberService.saveMemberProfile(memberId, memberSaveProfileDto);
