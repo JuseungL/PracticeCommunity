@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ContentCommandService {
     private final MemberRepository memberRepository;
-    private final ContentRepository contentCommandRepository;
+    private final ContentRepository contentRepository;
     /**
      * Create
      */
@@ -31,7 +31,7 @@ public class ContentCommandService {
                 .member(member)
                 .build();
 
-        contentCommandRepository.save(content);
+        contentRepository.save(content);
     }
 
     /**
@@ -56,13 +56,13 @@ public class ContentCommandService {
      */
     public void deleteContent(Long memberId, Long contentId) {
         Content content = writerValidate(memberId, contentId);
-        contentCommandRepository.delete(content);
+        contentRepository.delete(content);
     }
 
 
 
     public Content writerValidate(Long memberId, Long contentId) {
-        Content content = contentCommandRepository.findContentByIdOrThrow(contentId);
+        Content content = contentRepository.findContentByIdOrThrow(contentId);
 
         Long contentMemberId = content.getMember().getId();
         if (!contentMemberId.equals(memberId)) {
