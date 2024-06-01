@@ -1,5 +1,6 @@
 package com.server.PracticeJpa.api.content.domain;
 
+import com.server.PracticeJpa.api.comment.domain.Comment;
 import com.server.PracticeJpa.api.member.domain.Member;
 import com.server.PracticeJpa.common.auditing.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -8,19 +9,28 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Content extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 500, nullable = false)
     private String title;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String contentText;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Content(String title, String contentText, Member member) {

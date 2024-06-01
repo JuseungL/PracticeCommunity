@@ -26,9 +26,9 @@ public class ContentCommandService {
         Member member = memberRepository.findMemberByIdOrThrow(memberId);
 
         Content content = Content.builder()
+                .member(member)
                 .title(title)
                 .contentText(text)
-                .member(member)
                 .build();
 
         contentRepository.save(content);

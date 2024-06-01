@@ -32,10 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/token",
             "/login",
             "/api/v1/contents/**/detail",
+            "/api/v1/contents/**/comments",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/swagger-ui/index.html"};
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
