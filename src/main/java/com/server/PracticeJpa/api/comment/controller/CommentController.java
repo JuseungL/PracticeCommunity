@@ -44,4 +44,13 @@ public class CommentController {
         List<CommentGetAllRequestDto> comments = commentQueryService.getComments(contentId);
         return ApiResponse.success(GET_COMMENT_ALL_SUCCESS, comments);
     }
+
+    // Pagination O
+    @GetMapping("/contents/{contentId}/comments/pagination")
+    public ResponseEntity<ApiResponse<Object>> getCommentsPagination(
+            @PathVariable Long contentId,
+            @RequestParam(value = "cursor") Long cursor) // cusor is last commentId
+    {
+        return ApiResponse.success(GET_COMMENT_ALL_SUCCESS, commentQueryService.getCommentsPagination(contentId, cursor));
+    }
 }
