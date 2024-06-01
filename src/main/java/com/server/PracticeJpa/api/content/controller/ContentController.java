@@ -2,7 +2,9 @@ package com.server.PracticeJpa.api.content.controller;
 
 import com.server.PracticeJpa.api.content.dto.request.ContentCreateRequestDto;
 import com.server.PracticeJpa.api.content.dto.request.ContentPatchReqeustDto;
+import com.server.PracticeJpa.api.content.dto.response.ContentGetAllResponseDto;
 import com.server.PracticeJpa.api.content.service.ContentCommandService;
+import com.server.PracticeJpa.api.content.service.ContentQueryService;
 import com.server.PracticeJpa.common.response.ApiResponse;
 import com.server.PracticeJpa.common.response.SuccessStatus;
 import com.server.PracticeJpa.common.util.MemberUtil;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,7 +23,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/contents")
 public class ContentController {
     private final ContentCommandService contentCommandService;
-//    private final ContentQueryService contentQueryService;
+    private final ContentQueryService contentQueryService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Object>> createContent(Principal principal, @Valid @RequestBody ContentCreateRequestDto contentCreateRequestDto) {
@@ -28,6 +31,18 @@ public class ContentController {
         contentCommandService.createContent(memberId, contentCreateRequestDto);
         return ApiResponse.success(SuccessStatus.CREATE_CONTENT_SUCCESS);
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ContentGetAllResponseDto>>> getContents() {
+        return ApiResponse.success(SuccessStatus.GET_CONTENT_ALL_SUCCESS, contentQueryService.getContents());
+    }
+
+
+    @GetMapping("/{contentId}/detail")
+    public ResponseEntity<ApiResponse<Object>> getContent(@PathVariable(name = "contentId") Long contentId) {
+        return ApiResponse.success(SuccessStatus.GET_CONTENT_DETAIL_SUCCESS, contentQueryService.getContent(contentId));
+    }
+
 
     @PatchMapping("/{contentId}")
     public ResponseEntity<ApiResponse<Object>> updateContent(Principal principal, @PathVariable(name = "contentId") Long contentId, @Valid @RequestBody ContentPatchReqeustDto contentUpdateReqeustDto) {
@@ -42,5 +57,6 @@ public class ContentController {
         contentCommandService.deleteContent(memberId, contentId);
         return ApiResponse.success(SuccessStatus.DELETE_CONTENT_SUCCESS);
     }
+
 
 }

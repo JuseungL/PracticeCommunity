@@ -5,6 +5,7 @@ import com.server.PracticeJpa.api.member.dto.request.MemberSaveProfileDto;
 import com.server.PracticeJpa.api.member.dto.response.MemberGetProfileResponseDto;
 import com.server.PracticeJpa.api.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ModelMapper modelMapper;
 
     public MemberGetProfileResponseDto getMemberProfile(Long memberId) {
         Member member = memberRepository.findMemberByIdOrThrow(memberId);
-        return MemberGetProfileResponseDto.of(member);
+//        return MemberGetProfileResponseDto.of(member);
+        return modelMapper.map(member, MemberGetProfileResponseDto.class);
     }
 
     public void updateRefreshToken(Long memberId, String refreshToken) {
