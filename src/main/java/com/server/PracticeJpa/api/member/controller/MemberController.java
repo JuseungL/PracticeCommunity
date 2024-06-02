@@ -1,5 +1,6 @@
 package com.server.PracticeJpa.api.member.controller;
 
+import com.server.PracticeJpa.api.member.domain.Member;
 import com.server.PracticeJpa.api.member.dto.request.MemberSaveProfileDto;
 import com.server.PracticeJpa.api.member.dto.response.MemberGetProfileResponseDto;
 import com.server.PracticeJpa.api.member.service.MemberService;
@@ -14,6 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+
+import static com.server.PracticeJpa.common.response.SuccessStatus.SAVE_MEMBER_PROFILE;
+import static com.server.PracticeJpa.common.response.SuccessStatus.WITHDRAWAL_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -31,11 +36,27 @@ public class MemberController {
         return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfile(memberId));
     }
 
+    // 멤버 전체 조회
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<MemberGetProfileResponseDto>>> getMemberProfiles() {
+        return ApiResponse.success(SuccessStatus.GET_PROFILE_SUCCESS, memberService.getMemberProfiles());
+    }
+
     // Member 유저 프로필 등록
-    @PostMapping
+    @PostMapping("/profile")
     public ResponseEntity<ApiResponse<Object>> saveMemberProfile(Principal principal, @Valid @RequestBody MemberSaveProfileDto memberSaveProfileDto) {
         Long memberId = MemberUtil.getMemberId(principal);
+        System.out.println("memberId = " + memberId);
         memberService.saveMemberProfile(memberId, memberSaveProfileDto);
-        return ApiResponse.success(SuccessStatus.SAVE_MEMBER_PROFILE);
+        return ApiResponse.success(SAVE_MEMBER_PROFILE);
+    }
+
+    // Member 삭제
+    @DeleteMapping("/{memberId}")
+    public  ResponseEntity<ApiResponse<Object>> deleteMember(Principal principal, @PathVariable Long memberId) {
+//        memberService.deleteMember(MemberUtil.getMemberId(principal));
+//        memberService.softDeleteMemberV1(MemberUtil.getMemberId(principal));
+        memberService.softDeleteMemberV2(MemberUtil.getMemberId(principal));
+        return ApiResponse.success(WITHDRAWAL_SUCCESS);
     }
 }

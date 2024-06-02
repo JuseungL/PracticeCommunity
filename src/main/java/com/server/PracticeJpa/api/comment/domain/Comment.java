@@ -8,10 +8,16 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@SQLDelete(sql = "UPDATE comment SET is_deleted = true, deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("is_deleted = false")
 public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +32,23 @@ public class Comment extends BaseEntity {
 
     private String commentText;
 
+    /**
+     * Soft Delete
+     */
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deleteAt;
+
     @Builder
     public Comment(Member member, Content content, String commentText) {
         this.member = member;
         this.content = content;
         this.commentText = commentText;
+    }
+
+    public void commentSoftDelete() {
+        this.isDeleted = true;
     }
 }

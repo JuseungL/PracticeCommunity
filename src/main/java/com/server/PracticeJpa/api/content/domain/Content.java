@@ -8,13 +8,16 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("is_deleted = false")
 public class Content extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +35,15 @@ public class Content extends BaseEntity {
     @OneToMany(mappedBy = "content", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
+    /**
+     * Soft Delete
+     */
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deleteAt;
+
     @Builder
     public Content(String title, String contentText, Member member) {
         this.title = title;
@@ -41,6 +53,5 @@ public class Content extends BaseEntity {
 
     public void updateTitle(String title) { this.title = title;}
     public void updateContentText(String contentText) {this.contentText = contentText;}
-
 
 }
