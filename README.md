@@ -21,7 +21,11 @@
 
 ## 알아야할 것 같은 개념들
 - 접근 제어자 - ()
-- Cascade Type - (X)
+- Cascade Type - (O)
+  - https://ai-back-end.tistory.com/56
+  - https://ai-back-end.tistory.com/58
+- orphanRemoval = true - (O)
+  - https://ai-back-end.tistory.com/59
 - Lombok ArgsConstructors - ()
 - 예외처리 로직 도식화 해놓기 - ()
 - JPA와 영속성 컨텍스트 동작 - ()
