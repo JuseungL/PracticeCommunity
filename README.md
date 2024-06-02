@@ -13,10 +13,10 @@
   - TimeZoneConfig
   - SwaggerConfig
   - AuditingConfig
+- Soft Delete (SQLDelete)
 
 ## TODO
 - QueryDSL for Dynamic Query
-- Soft Delete (SQLDelete)
 
 ## 알아야할 것 같은 개념들
 - 접근 제어자
@@ -24,3 +24,4 @@
 - Lombok ArgsConstructors
 - 예외처리 로직 도식화 해놓기
 - JPQL
+- JPA와 영속성 컨텍스트 동작
