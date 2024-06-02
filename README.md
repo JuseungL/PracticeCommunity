@@ -6,9 +6,9 @@
 - Exception Handling
   - @RestControllerAdvice / @ExceptionHandler
 - Pagination
-- Spring Data JPA, JPQL, 
+- Spring Data JPA, JPQL
+- ModelMapper
 - etc Config
   - TimeZoneConfig
   - SwaggerConfig
   - AuditingConfig
-  - ModelMapper
