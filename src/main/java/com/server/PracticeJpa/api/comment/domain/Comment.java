@@ -4,10 +4,7 @@ import com.server.PracticeJpa.api.content.domain.Content;
 import com.server.PracticeJpa.api.member.domain.Member;
 import com.server.PracticeJpa.common.auditing.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 //@SQLDelete(sql = "UPDATE comment SET is_deleted = true, deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@ToString
 public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +40,7 @@ public class Comment extends BaseEntity {
     private LocalDateTime deleteAt;
 
     @Builder
-    public Comment(Member member, Content content, String commentText) {
+    private Comment(Member member, Content content, String commentText) {
         this.member = member;
         this.content = content;
         this.commentText = commentText;

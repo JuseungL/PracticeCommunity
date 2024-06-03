@@ -27,7 +27,6 @@ public class CommentCommandService {
     public void createComment(Long memberId, Long contentId, CommentCreateRequestDto commentCreateRequestDto) {
         Content content = contentRepository.findContentByIdOrThrow(contentId);
         Member commetWriter = memberRepository.findMemberByIdOrThrow(memberId);
-
         Comment comment = Comment.builder()
                 .member(commetWriter)
                 .content(content)

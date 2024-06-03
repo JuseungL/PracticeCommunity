@@ -54,4 +54,5 @@ public class Content extends BaseEntity {
     public void updateTitle(String title) { this.title = title;}
     public void updateContentText(String contentText) {this.contentText = contentText;}
 
+    public void addComment(Comment comment) {this.comments.add(comment);}
 }
