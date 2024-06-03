@@ -27,7 +27,6 @@ public class CommentQueryService {
     public List<CommentGetAllRequestDto> getComments(Long contentId) {
         contentRepository.findContentByIdOrThrow(contentId);
         List<Comment> comments = commentRepository.findCommentsByContentIdOrderByCreatedDateAsc(contentId);
-
         return comments.stream()
                 .map(comment -> CommentGetAllRequestDto.of(comment.getMember(), comment))
                 .collect(Collectors.toList());

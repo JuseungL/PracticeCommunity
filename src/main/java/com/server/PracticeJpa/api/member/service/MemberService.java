@@ -6,6 +6,7 @@ import com.server.PracticeJpa.api.comment.service.CommentCommandService;
 import com.server.PracticeJpa.api.content.domain.Content;
 import com.server.PracticeJpa.api.content.repository.ContentRepository;
 import com.server.PracticeJpa.api.member.domain.Member;
+import com.server.PracticeJpa.api.member.domain.RoleType;
 import com.server.PracticeJpa.api.member.dto.request.MemberSaveProfileDto;
 import com.server.PracticeJpa.api.member.dto.response.MemberGetProfileResponseDto;
 import com.server.PracticeJpa.api.member.repository.MemberRepository;
@@ -49,8 +50,7 @@ public class MemberService {
         Member byoAuth2Id = memberRepository.findMemberByIdOrThrow(memberId);
         String nickname = memberSaveProfileDto.nickname();
         String memberIntro = memberSaveProfileDto.memberIntro();
-        byoAuth2Id.updateNickname(nickname);
-        byoAuth2Id.updateMemberIntro(memberIntro);
+        byoAuth2Id.updateMemberProfile(nickname, memberIntro);
     }
 
     public void deleteMember(Long memberId) {

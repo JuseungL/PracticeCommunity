@@ -1,5 +1,6 @@
 package com.server.PracticeJpa.api.content.service;
 
+import com.server.PracticeJpa.api.comment.domain.Comment;
 import com.server.PracticeJpa.api.content.domain.Content;
 import com.server.PracticeJpa.api.content.dto.request.ContentCreateRequestDto;
 import com.server.PracticeJpa.api.content.dto.request.ContentPatchReqeustDto;
@@ -31,6 +32,13 @@ public class ContentCommandService {
                 .contentText(text)
                 .build();
 
+        Comment comment = Comment.builder()
+                .commentText("Cascade Test")
+                .member(member)
+                .content(content)
+                .build();
+
+        content.addComment(comment);
         contentRepository.save(content);
     }
 

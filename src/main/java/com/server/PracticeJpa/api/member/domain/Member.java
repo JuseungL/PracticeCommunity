@@ -60,17 +60,21 @@ public class Member extends BaseTimeEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deleteAt;
 
-    @Builder // OAuth2.0 로그인 시 자동 입력되는 정보
+    @Builder
     private Member(String oAuth2Id, String name, String email, RoleType roleType){
         this.oAuth2Id = oAuth2Id;
         this.name = name;
         this.email = email;
         this.roleType = roleType;
     }
-
-    // Setter를 쓰지않고 업데이트 메소드 활용
     public void updateRefreshToken(String refreshToken) { this.refreshToken = refreshToken;}
-    public void updateNickname(String newNickname) {this.nickname = newNickname;}
-    public void updateMemberIntro(String memberIntro) {this.memberIntro = memberIntro;}
 
+    /**
+     * 각각 두지 않고 묶어서 코드 응집성을 높히고 이름도 도메인을 잘 드러내도록
+     * 기존엔 updateNickname, updateMemberIntro 이렇게 분리해둠
+     */
+    public void updateMemberProfile(String nickname, String memberIntro) {
+        this.nickname = nickname;
+        this.memberIntro = memberIntro;
+    }
 }
