@@ -14,9 +14,9 @@
   - SwaggerConfig
   - AuditingConfig
 - Soft Delete (SQLDelete)
+- QueryDSL for Dynamic Query
 
 ## TODO
-- QueryDSL for Dynamic Query
 - MultipartJackson2HttpMessageConverter
 - 동시성 처리
 - 성능 테스트
