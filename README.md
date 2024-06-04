@@ -30,6 +30,7 @@
 - Entity에서의 롬복 사용 근거 찾기  - (O)
   - https://ai-back-end.tistory.com/60
 - 접근 제어자 - (O)
+  - https://ai-back-end.tistory.com/61
 - 예외처리 로직 도식화 해놓기 - ()
 - JPA와 영속성 컨텍스트 동작 - ()
 - JPQL - ()
