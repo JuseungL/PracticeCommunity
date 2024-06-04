@@ -13,12 +13,15 @@ import java.util.List;
 
 import static com.server.PracticeJpa.api.content.domain.QContent.content;
 
+/**
+ *  Query DSL을 위한 Repository임.
+ */
 @Repository
 @RequiredArgsConstructor
 public class ContentQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<Content> findAllBySearchAndFilterWithDsl(String kw, ContentType contentType) {
+    public List<Content> findAllBySearchAndFilterWithDsl(String kw, String contentType) {
         QContent content = QContent.content;
         return queryFactory.selectFrom(content)
                 .where(
@@ -31,13 +34,16 @@ public class ContentQueryRepository {
 
 
     private BooleanExpression eqKeyword(String kw) {
+        System.out.println("kw = " + kw);
         if (StringUtils.isEmpty(kw)) { return null; }
         return content.title.containsIgnoreCase(kw);
     }
 
-    private BooleanExpression eqContentType(ContentType contentType) {
-        System.out.println("String.valueOf(contentType) = " + String.valueOf(contentType));
-        if (StringUtils.isEmpty(String.valueOf(contentType))) { return null;}
-        return content.contentType.eq(contentType);
+    private BooleanExpression eqContentType(String contentType) {
+        if (StringUtils.isEmpty(contentType)) {
+            return null;
+        }
+        ContentType ct = ContentType.valueOf(contentType);
+        return content.contentType.eq(ct);
     }
 }

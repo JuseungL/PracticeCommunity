@@ -34,7 +34,10 @@ public class ContentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ContentGetAllResponseDto>>> getContents(@RequestParam(required = false) String kw, ContentType contentType) {
+    public ResponseEntity<ApiResponse<List<ContentGetAllResponseDto>>> getContents(
+            @RequestParam(required = false, defaultValue = "") String kw,
+            @RequestParam(required = false, defaultValue = "") String contentType)
+    {
         return ApiResponse.success(SuccessStatus.GET_CONTENT_ALL_SUCCESS, contentQueryService.getContents(kw, contentType));
     }
 

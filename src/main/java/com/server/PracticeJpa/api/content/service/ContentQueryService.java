@@ -22,7 +22,7 @@ public class ContentQueryService {
     /**
      * Read
      */
-    public List<ContentGetAllResponseDto> getContents(String kw, ContentType contentType) {
+    public List<ContentGetAllResponseDto> getContents(String kw, String contentType) {
 //        List<Content> contents = contentRepository.findAllByOrderByCreatedDateDesc();
         List<Content> contents = contentQueryRepository.findAllBySearchAndFilterWithDsl(kw, contentType);
         return contents.stream()
