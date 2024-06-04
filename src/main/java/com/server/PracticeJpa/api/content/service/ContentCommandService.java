@@ -2,6 +2,7 @@ package com.server.PracticeJpa.api.content.service;
 
 import com.server.PracticeJpa.api.comment.domain.Comment;
 import com.server.PracticeJpa.api.content.domain.Content;
+import com.server.PracticeJpa.api.content.domain.ContentType;
 import com.server.PracticeJpa.api.content.dto.request.ContentCreateRequestDto;
 import com.server.PracticeJpa.api.content.dto.request.ContentPatchReqeustDto;
 import com.server.PracticeJpa.api.content.repository.ContentRepository;
@@ -22,23 +23,18 @@ public class ContentCommandService {
      * Create
      */
     public void createContent(Long memberId, ContentCreateRequestDto contentCreateRequestDto) {
+        ContentType contentType = contentCreateRequestDto.contentType();
         String title = contentCreateRequestDto.title();
         String text = contentCreateRequestDto.contentText();
         Member member = memberRepository.findMemberByIdOrThrow(memberId);
 
         Content content = Content.builder()
                 .member(member)
+                .contentType(contentType)
                 .title(title)
                 .contentText(text)
                 .build();
 
-        Comment comment = Comment.builder()
-                .commentText("Cascade Test")
-                .member(member)
-                .content(content)
-                .build();
-
-        content.addComment(comment);
         contentRepository.save(content);
     }
 

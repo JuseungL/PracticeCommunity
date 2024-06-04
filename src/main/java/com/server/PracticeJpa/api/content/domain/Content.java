@@ -22,6 +22,10 @@ public class Content extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ContentType contentType = ContentType.NORMAL;
+
     @Column(length = 500, nullable = false)
     private String title;
 
@@ -45,7 +49,8 @@ public class Content extends BaseEntity {
     private LocalDateTime deleteAt;
 
     @Builder
-    public Content(String title, String contentText, Member member) {
+    public Content(ContentType contentType, String title, String contentText, Member member) {
+        this.contentType = contentType;
         this.title = title;
         this.contentText = contentText;
         this.member = member;
