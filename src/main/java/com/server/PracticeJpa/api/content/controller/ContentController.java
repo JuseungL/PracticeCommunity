@@ -1,5 +1,6 @@
 package com.server.PracticeJpa.api.content.controller;
 
+import com.server.PracticeJpa.api.content.domain.ContentType;
 import com.server.PracticeJpa.api.content.dto.request.ContentCreateRequestDto;
 import com.server.PracticeJpa.api.content.dto.request.ContentPatchReqeustDto;
 import com.server.PracticeJpa.api.content.dto.response.ContentGetAllResponseDto;
@@ -33,8 +34,8 @@ public class ContentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ContentGetAllResponseDto>>> getContents() {
-        return ApiResponse.success(SuccessStatus.GET_CONTENT_ALL_SUCCESS, contentQueryService.getContents());
+    public ResponseEntity<ApiResponse<List<ContentGetAllResponseDto>>> getContents(@RequestParam(required = false) String kw, ContentType contentType) {
+        return ApiResponse.success(SuccessStatus.GET_CONTENT_ALL_SUCCESS, contentQueryService.getContents(kw, contentType));
     }
 
 
