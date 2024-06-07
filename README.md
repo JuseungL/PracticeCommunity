@@ -17,6 +17,7 @@
 - QueryDSL for Dynamic Query
 
 ## TODO
+- Web Socket 써서 채팅 기능 구현
 - MultipartJackson2HttpMessageConverter
 - 동시성 처리
 - 성능 테스트
